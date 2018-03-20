@@ -1,0 +1,19 @@
+<html>
+<head>
+	<title>Visa Conversational Form</title></head>
+	<script type="text/javascript" src="/js/conversational-form.js" crossorigin></script>
+<body>
+	<form id="visaSubmission" action="/visa" method="post" cf-form>
+		<input type="text" name="name" cf-questions="Hey there! What's your name?" cf-input-placeholder="John Doe"/>
+		<input type="text" name="email" cf-questions="What's your email id {name}?" cf-input-placeholder="jdoe@example.com"/>
+		<fieldset cf-questions="Thanks for the answer {name}. Which country's visa do you require?">
+			<input type="radio" name="country" cf-label="US" value="US"/>
+			<input type="radio" name="country" cf-label="SG" value="SG"/>
+			<input type="radio" name="country" cf-label="UK" value="UK"/>
+		</fieldset>
+		<fieldset cf-questions="Please select the visa type for your visit to {country}">
+			<input type="radio" name="visaType" cf-label="Tourist" value="Tourist"/>
+			<input type="radio" name="visaType" cf-label="Business" value="Business"/>
+		</fieldset>
+	</form>
+</body>
