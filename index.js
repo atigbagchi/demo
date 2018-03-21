@@ -3,6 +3,8 @@ const bodyParser = require('body-parser')
 const dateFormat = require('dateformat');
 const express = require('express');
 const MongoClient = require('mongodb').MongoClient;
+const sgMail = require('@sendgrid/mail');
+sgMail.setApiKey('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');
 
 var services = JSON.parse(process.env.VCAP_SERVICES);
 var mongoUri = services['mlab'][0].credentials.uri;
@@ -34,7 +36,8 @@ app.post('/visa', function(req,res,next){
 	resJSON.email = req.body.email;
 	resJSON.country = req.body.country;
 	resJSON.visaType = req.body.visaType;
-	
+
+	sendEmail(resJSON);
 	updateDashboardJSON(resJSON);
 	
 	res.json(resJSON);
@@ -62,6 +65,21 @@ app.get('/dashboard', function(req,res,next){
 app.get('/health', function(req,res,next){
 	res.sendStatus(200);
 });
+
+const sendEmail = function (data) {
+	var msg = {
+		to: data.email,
+		from: 'hello@sendgrid.com',
+		subject: 'Visa application submitted for ' + data.name,
+		html: '<strong>We will update you with the status later</strong>',
+	};
+	try {
+		console.log("Attempting to mail the following: " + JSON.stringify(msg));
+		sgMail.send(msg);
+	} catch (ex) {
+		console.log("Email sending error: " + ex);
+	}
+};
 
 const getDashboardJSON = function (callback) {
 	MongoClient.connect(mongoUri, function(err, client) {
