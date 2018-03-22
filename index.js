@@ -4,6 +4,7 @@ const dateFormat = require('dateformat');
 const express = require('express');
 const MongoClient = require('mongodb').MongoClient;
 const sgMail = require('@sendgrid/mail');
+sgMail.setApiKey(process.env.API_KEY);
 
 var services = JSON.parse(process.env.VCAP_SERVICES);
 var mongoUri = services['mlab'][0].credentials.uri;
